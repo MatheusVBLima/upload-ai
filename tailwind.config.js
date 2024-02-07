@@ -12,7 +12,7 @@ module.exports = {
     screens: {
 
 
-      'mobile': { 'min': '350px', 'max': '1023px' },
+      'mobile': { 'min': '250px', 'max': '1023px' },
 
     },
     container: {
