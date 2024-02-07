@@ -50,7 +50,7 @@ export function App() {
           </span>
         </div>
       </div>
-      <main className='flex-1 p-6 flex gap-6'>
+      <main className='flex-1 p-6 flex gap-6 mobile:flex-col-reverse '>
         <div className='flex flex-col flex-1 gap-4'>
           <div className='grid grid-rows-2 gap-4 flex-1'>
             <Textarea
@@ -73,7 +73,7 @@ export function App() {
             prompt para adicionar o conteúdo da transcrição do vídeo selecionado
           </p>
         </div>
-        <aside className='w-80 space-y-6'>
+        <aside className='w-80 space-y-6  mobile:w-auto'>
           <VideoInputForm onVideoUploaded={setVideoId} />
           <Separator />
           <form onSubmit={handleSubmit} className='space-y-6'>
