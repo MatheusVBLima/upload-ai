@@ -15,6 +15,7 @@ import { VideoInputForm } from "./components/video-input-form";
 import { PromptSelect } from "./components/prompt-select";
 import { useState } from "react";
 import { useCompletion } from "ai/react";
+import { TextInputForm } from "./components/text-input-form";
 
 export function App() {
   const [temperature, setTemperature] = useState(0.5);
@@ -75,6 +76,8 @@ export function App() {
         </div>
         <aside className='w-80 space-y-6  mobile:w-auto'>
           <VideoInputForm onVideoUploaded={setVideoId} />
+          <Separator />
+          <TextInputForm />
           <Separator />
           <form onSubmit={handleSubmit} className='space-y-6'>
             <div className='space-y-2'>
