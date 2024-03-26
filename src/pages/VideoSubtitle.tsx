@@ -1,9 +1,8 @@
-import { Label } from "@radix-ui/react-label";
 import { Separator } from "@radix-ui/react-separator";
-import { FileVideo, Upload } from "lucide-react";
-import { ChangeEvent, FormEvent, useMemo, useRef, useState } from "react";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
+import { FileVideo, Upload, Download } from "lucide-react";
+import { ChangeEvent, FormEvent, useMemo, useState } from "react";
+
+import { Button } from "../components/ui/button";
 import { getFFmpeg } from "@/lib/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
 import { api } from "@/lib/axios";
@@ -17,15 +16,14 @@ const statusMessages = {
   success: "Sucesso!",
 };
 
-interface VideoInputFormProps {
+interface VideoSubtitleProps {
   onVideoUploaded: (videoId: string) => void;
 }
 
-export function VideoInputForm(props: VideoInputFormProps) {
+export function VideoSubtitle(props: VideoSubtitleProps) {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [status, setStatus] = useState<Status>("waiting");
-  const promptInputRef = useRef<HTMLTextAreaElement>(null);
-  const [, setTranscription] = useState<string | null>(null);
+  const [transcription, setTranscription] = useState<string | null>(null);
 
   function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
     const { files } = event.currentTarget;
@@ -72,8 +70,6 @@ export function VideoInputForm(props: VideoInputFormProps) {
   async function handleUploadVideo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const prompt = promptInputRef.current?.value;
-
     if (!videoFile) {
       return;
     }
@@ -95,10 +91,7 @@ export function VideoInputForm(props: VideoInputFormProps) {
     setStatus("generating");
 
     const transcriptionResponse = await api.post(
-      `/videos/${videoId}/transcription`,
-      {
-        prompt,
-      }
+      `/videos/${videoId}/transcription`
     );
 
     setStatus("success");
@@ -106,6 +99,15 @@ export function VideoInputForm(props: VideoInputFormProps) {
     setTranscription(transcriptionResponse.data);
 
     props.onVideoUploaded(videoId);
+  }
+
+  function handleDownload(text: string) {
+    const element = document.createElement("a");
+    const file = new Blob([text], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = "transcricao.txt";
+    document.body.appendChild(element);
+    element.click();
   }
 
   const previewURL = useMemo(() => {
@@ -117,7 +119,11 @@ export function VideoInputForm(props: VideoInputFormProps) {
   }, [videoFile]);
 
   return (
-    <div>
+    <div className="container mt-6 flex flex-col items-center justify-center gap-8">
+      <h1 className="font-semibold text-xl">
+        Selecione um vídeo de até 50mb, clique em "Carregar Vídeo" e faça o
+        download de tudo o que foi dito no vídeo!
+      </h1>
       <form onSubmit={handleUploadVideo} className="space-y-6">
         <label
           htmlFor="video"
@@ -144,17 +150,6 @@ export function VideoInputForm(props: VideoInputFormProps) {
           onChange={handleFileSelected}
         />
         <Separator />
-
-        <div className="space-y-2">
-          <Label htmlFor="transcription_prompt">Prompt de transcrição</Label>
-          <Textarea
-            disabled={status != "waiting"}
-            ref={promptInputRef}
-            id="transcription_prompt"
-            placeholder="Inclua palavras chave mencionadas no vídeo e separadas por vírgula"
-            className="min-h-20 leading-relaxed resize-none"
-          />
-        </div>
         <Button
           data-success={status === "success"}
           disabled={status != "waiting"}
@@ -169,6 +164,17 @@ export function VideoInputForm(props: VideoInputFormProps) {
           ) : (
             statusMessages[status]
           )}
+        </Button>
+
+        <Button
+          onClick={() => handleDownload(transcription ?? "")}
+          data-success={status === "success"}
+          disabled={status !== "success"}
+          className="w-full data-[success=true]:bg-emerald-400"
+          type="button"
+        >
+          Download da Transcrição
+          <Download className="w-4 h-4 ml-2" />
         </Button>
       </form>
     </div>
