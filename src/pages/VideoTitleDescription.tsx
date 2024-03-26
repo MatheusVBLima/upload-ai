@@ -40,9 +40,8 @@ export function VideoTitleDescription() {
     },
   });
   return (
-    
-      <main className="flex-1 p-6 flex gap-6 mobile:flex-col-reverse container">
-        <div className="flex flex-col flex-1 gap-4">
+      <main className="p-6 md:flex gap-6 grid grid-cols-1 container">
+        <div className="flex flex-col flex-1 gap-4 row-start-2">
           <div className="grid grid-rows-2 gap-4 flex-1">
             <Textarea
               placeholder="Inclua o promp para a IA..."
@@ -64,7 +63,7 @@ export function VideoTitleDescription() {
             prompt para adicionar o conteúdo da transcrição do vídeo selecionado
           </p>
         </div>
-        <aside className="w-80 space-y-6  mobile:w-auto">
+        <aside className="md:w-80 space-y-6 w-auto">
           <VideoInputForm onVideoUploaded={setVideoId} />
           <Separator />
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -111,6 +110,6 @@ export function VideoTitleDescription() {
           </form>
         </aside>
       </main>
-    
+ 
   );
 }
