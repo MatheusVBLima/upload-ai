@@ -40,8 +40,8 @@ export function VideoTitleDescription() {
     },
   });
   return (
-    <div>
-      <main className="flex-1 p-6 flex gap-6 mobile:flex-col-reverse ">
+    
+      <main className="flex-1 p-6 flex gap-6 mobile:flex-col-reverse container">
         <div className="flex flex-col flex-1 gap-4">
           <div className="grid grid-rows-2 gap-4 flex-1">
             <Textarea
@@ -111,6 +111,6 @@ export function VideoTitleDescription() {
           </form>
         </aside>
       </main>
-    </div>
+    
   );
 }

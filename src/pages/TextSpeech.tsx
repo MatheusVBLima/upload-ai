@@ -78,7 +78,7 @@ export function TextSpeech() {
   }
 
   return (
-    <div className="container mt-6 flex flex-col items-center justify-center gap-8">
+    <main className="container mt-6 flex flex-col items-center justify-center gap-8">
       <h1 className="font-semibold text-xl">
         Selecione um aquivo .txt, clique em "Carregar Texto" e faça o download
         de um arquivo mp3 com uma IA lendo tudo o que foi escrito!
@@ -125,6 +125,6 @@ export function TextSpeech() {
           <Download className="w-4 h-4 ml-2" />
         </Button>
       </form>
-    </div>
+    </main>
   );
 }

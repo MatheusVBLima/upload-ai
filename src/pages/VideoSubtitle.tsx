@@ -119,7 +119,7 @@ export function VideoSubtitle(props: VideoSubtitleProps) {
   }, [videoFile]);
 
   return (
-    <div className="container mt-6 flex flex-col items-center justify-center gap-8">
+    <main className="container mt-6 flex flex-col items-center justify-center gap-8">
       <h1 className="font-semibold text-xl">
         Selecione um vídeo de até 50mb, clique em "Carregar Vídeo" e faça o
         download de tudo o que foi dito no vídeo!
@@ -177,6 +177,6 @@ export function VideoSubtitle(props: VideoSubtitleProps) {
           <Download className="w-4 h-4 ml-2" />
         </Button>
       </form>
-    </div>
+    </main>
   );
 }
