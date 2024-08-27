@@ -132,7 +132,7 @@ export function VideoInputForm(props: VideoInputFormProps) {
           ) : (
             <>
               <FileVideo className="w-4 h-4" />
-              Seleciona um Vídeo
+              Select a video
             </>
           )}
         </label>

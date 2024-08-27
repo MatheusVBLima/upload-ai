@@ -120,9 +120,10 @@ export function VideoSubtitle(props: VideoSubtitleProps) {
 
   return (
     <main className="container mt-6 flex flex-col items-center justify-center gap-8">
-      <h1 className="font-semibold text-xl">
-        Selecione um vídeo de até 50mb, clique em "Carregar Vídeo" e faça o
-        download de tudo o que foi dito no vídeo!
+      <h1 className="font-semibold text-xl text-center">
+        Upload a video up to 50mb, click "Upload Video" and download everything
+        said in the video!
+
       </h1>
       <form onSubmit={handleUploadVideo} className="space-y-6">
         <label
@@ -138,7 +139,7 @@ export function VideoSubtitle(props: VideoSubtitleProps) {
           ) : (
             <>
               <FileVideo className="w-4 h-4" />
-              Seleciona um Vídeo
+              Select a video
             </>
           )}
         </label>
@@ -155,25 +156,27 @@ export function VideoSubtitle(props: VideoSubtitleProps) {
           disabled={status != "waiting"}
           className="w-full data-[success=true]:bg-emerald-400"
           type="submit"
+
+          
         >
           {status === "waiting" ? (
             <>
-              Carregar Vídeo
+              Upload Video
               <Upload className="w-4 h-4 ml-2" />
             </>
           ) : (
             statusMessages[status]
           )}
         </Button>
-
         <Button
           onClick={() => handleDownload(transcription ?? "")}
           data-success={status === "success"}
           disabled={status !== "success"}
           className="w-full data-[success=true]:bg-emerald-400"
           type="button"
+          newData-success={status === "success"}
         >
-          Download da Transcrição
+          Download Transcription
           <Download className="w-4 h-4 ml-2" />
         </Button>
       </form>

@@ -7,7 +7,7 @@ interface ContextProps {
   videoId: string | null;
   setVideoId: React.Dispatch<React.SetStateAction<string | null>>;
 
-  completion: any; // Replace 'any' with the actual type of 'completion'
+  completion: any; 
   isLoading: boolean;
 }
 
