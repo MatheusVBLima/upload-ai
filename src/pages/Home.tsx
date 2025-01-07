@@ -47,7 +47,7 @@ export function Home() {
             </CardDescription>
           </CardHeader>
           <CardFooter className="flex justify-center flex-1 pb-2 ">
-            <Button disabled={true} className="mt-auto"> 
+            <Button className="mt-auto"> 
               <Link to={"textspeech"} >Acessar</Link>
             </Button>
           </CardFooter>

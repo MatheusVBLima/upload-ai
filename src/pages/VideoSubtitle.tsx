@@ -1,11 +1,11 @@
 import { Separator } from "@radix-ui/react-separator";
-import { FileVideo, Upload, Download } from "lucide-react";
+import { Download, FileVideo, Upload } from "lucide-react";
 import { ChangeEvent, FormEvent, useMemo, useState } from "react";
-
-import { Button } from "../components/ui/button";
+//
+import { api } from "@/lib/axios";
 import { getFFmpeg } from "@/lib/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
-import { api } from "@/lib/axios";
+import { Button } from "../components/ui/button";
 
 type Status = "waiting" | "converting" | "uploading" | "generating" | "success";
 
@@ -17,7 +17,7 @@ const statusMessages = {
 };
 
 interface VideoSubtitleProps {
-  onVideoUploaded: (videoId: string) => void;
+  onVideoUploaded?: (videoId: string) => void;
 }
 
 export function VideoSubtitle(props: VideoSubtitleProps) {
@@ -90,15 +90,25 @@ export function VideoSubtitle(props: VideoSubtitleProps) {
 
     setStatus("generating");
 
-    const transcriptionResponse = await api.post(
-      `/videos/${videoId}/transcription`
-    );
+    try {
+      const transcriptionResponse = await api.post(
+        `/videos/${videoId}/transcription`,
+        {
+          prompt: '',
+        }
+      );
 
-    setStatus("success");
-
-    setTranscription(transcriptionResponse.data);
-
-    props.onVideoUploaded(videoId);
+      setStatus("success");
+      setTranscription(transcriptionResponse.data);
+      
+      if (props.onVideoUploaded) {
+        props.onVideoUploaded(videoId);
+      }
+    } catch (error) {
+      console.error("Erro na transcrição:", error);
+      setStatus("waiting");
+      alert("Erro ao gerar a transcrição. Por favor, tente novamente.");
+    }
   }
 
   function handleDownload(text: string) {
@@ -119,8 +129,8 @@ export function VideoSubtitle(props: VideoSubtitleProps) {
   }, [videoFile]);
 
   return (
-    <main className="container mt-6 flex flex-col items-center justify-center gap-8">
-      <h1 className="font-semibold text-xl text-center">
+    <main className="container flex flex-col items-center justify-center gap-8 mt-6">
+      <h1 className="text-xl font-semibold text-center">
         Upload a video up to 50mb, click "Upload Video" and download everything
         said in the video!
 
@@ -128,12 +138,12 @@ export function VideoSubtitle(props: VideoSubtitleProps) {
       <form onSubmit={handleUploadVideo} className="space-y-6">
         <label
           htmlFor="video"
-          className="relative border flex rounded-md aspect-video cursor-pointer border-dashed text-sm flex-col gap-2 items-center justify-center text-muted-foreground hover:bg-primary hover:text-secondary transition-colors duration-200 p-4"
+          className="relative flex flex-col items-center justify-center gap-2 p-4 text-sm transition-colors duration-200 border border-dashed rounded-md cursor-pointer aspect-video text-muted-foreground hover:bg-primary hover:text-secondary"
         >
           {videoFile ? (
             <video
               src={previewURL ?? ""}
-              className="pointer-events-none absolute inset-0 w-full h-full object-cover rounded-md"
+              className="absolute inset-0 object-cover w-full h-full rounded-md pointer-events-none"
               controls={false}
             />
           ) : (
